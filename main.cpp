@@ -24,7 +24,7 @@ using std::vector;
 template<typename T>
 void draw(const T &x, ostream &out, size_t position)
 {
-    out << string(position, ' ') << x << endl;
+    out << string(position, ' ') << x << "\n";
 }
 
 class object_t
@@ -118,22 +118,22 @@ public:
 
     DocumentVector m_Childs;
 
-    document_t() : m_Childs() {cout << "document_t(): " << std::hex << this << endl; }
+    document_t() : m_Childs() {cout << "document_t(): " << std::hex << this << "\n"; }
 
-    virtual ~document_t() {cout << "~document_t(): " << std::hex << this << endl;}
+    virtual ~document_t() {cout << "~document_t(): " << std::hex << this << "\n";}
 };
 
 //using document_t = vector<object_t>;
 
 void draw(const document_t &doc, ostream &out, size_t position)
 {
-    out << string(position, ' ') << "<document>" << endl;
+    out << string(position, ' ') << "<document>\n";
     for (auto &e : doc)
     {
         out << to_string(e.GetTag()) << ": ";
         draw(e, out, position + 2);
     }
-    out << string(position, ' ') << "</document>" << endl;
+    out << string(position, ' ') << "</document>\n";
 }
 
 using history_t = vector<document_t>;
@@ -161,13 +161,29 @@ void draw(const history_t &hist, ostream &out)
     for (auto &e : hist)
     {
         draw(e, out, 0);
-        cout << "--------------------------" << endl;
+        cout << "--------------------------\n";
     }
+}
+
+// http://florianjw.de/en/variadic_templates.html
+
+template<typename Fun, typename...Ts>
+void sequential_foreach(Fun f, const Ts &... args)
+{
+    (void) std::initializer_list<int>{(f(args), 0)...};
+}
+
+template<typename...Ts>
+void print_all(std::ostream &stream, const Ts &... args)
+{
+    sequential_foreach([&](const auto &arg) { stream << arg; }, args...);
 }
 
 int main()
 {
     cout << "Hello, World!" << endl;
+
+    print_all(cout, "Hello", " World", '!', 0 ,'\n');
 
     int i = 0;
     document_t doc;
