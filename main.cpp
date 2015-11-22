@@ -5,14 +5,15 @@
 #include "common_helpers.h"
 
 template<typename T>
-void print_to(const T &x, ostream &out, size_t position)
+void print_to(const T &X, ostream &Out, size_t Position)
 {
-    out << string(position, ' ') << x;
+    Out << string(Position, ' ') << X;
 }
 
 template<typename T>
-void draw(const T &x, ostream &out, size_t position)
+void draw(const T &X, ostream &Out, gp::IntRect Position)
 {
+    Position.print_to(Out, 2);
 }
 
 // class ui_object
@@ -31,7 +32,7 @@ void print_to(const my_class_t&, std::ostream& out, size_t position)
     out << std::string(position, ' ') << "my_class_t";
 }
 
-void draw(const my_class_t&, std::ostream& out, size_t position)
+void draw(const my_class_t&, std::ostream& Out, gp::IntRect Position)
 {
 }
 
@@ -62,12 +63,13 @@ int main()
 
 //    boost::uuids::uuid ot = current(h).m_Childs[0].GetTag();
 
-    commit(h);
-    current(h).emplace_back(current(h));
-    commit(h);
-    current(h).emplace_back(current(h));
+//    commit(h);
+//    current(h).emplace_back(current(h));
+//    commit(h);
+//    current(h).emplace_back(current(h));
 
     print_to(h, cout);
+    draw(h, cout);
 
     return 0;
 }

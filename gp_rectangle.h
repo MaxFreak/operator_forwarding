@@ -24,6 +24,11 @@ namespace gp
         template<typename U>
         explicit gp_rectangle(const gp_rectangle<U> &Rectangle);
 
+        void print_to(ostream &Out, size_t Pos) const
+        {
+            Out << string(Pos, ' ') << "(" << m_Left << "/" << m_Top << "):(W " << m_Width << ", H " << m_Height << ")";
+        }
+
         bool contains(T X, T Y) const;
 
         bool contains(const gp_point<T> &Point) const;

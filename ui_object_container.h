@@ -83,8 +83,12 @@ void print_to(const ui_object_container &doc, ostream &out, size_t position)
     out << string(position, ' ') << "</document>";
 }
 
-void draw(const ui_object_container &doc, ostream &out, size_t position)
+void draw(const ui_object_container &doc, ostream &out)
 {
+    for (auto &e : doc)
+    {
+        draw(e, out);
+    }
 }
 
 #endif //OPERATOR_FORWARDING_UI_OBJECT_CONTAINER_H

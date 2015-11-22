@@ -15,14 +15,16 @@
 
 #include <ostream>
 
+#include "gp_rectangle.h"
+
 using std::ostream;
 using std::move;
 using std::make_shared;
 using std::shared_ptr;
 using std::cout;
 
-template<typename T> void print_to(const T &x, ostream &out, size_t position);
-template<typename T> void draw(const T &x, ostream &out, size_t position);
+template<typename T> void print_to(const T &X, ostream &Out, size_t Position);
+template<typename T> void draw(const T &X, ostream &Out, gp::IntRect Position);
 
 class ui_object
 {
@@ -53,9 +55,9 @@ public:
         x.m_Self->internal_print_to(out, position);
     }
 
-    friend void draw(const ui_object &x, ostream &out, size_t position)
+    friend void draw(const ui_object &x, ostream &out)
     {
-        x.m_Self->internal_draw(out, position);
+        x.m_Self->internal_draw(out);
     }
 
 private:
@@ -64,45 +66,46 @@ private:
         virtual ~object_concept() = default;
 
         virtual void internal_print_to(ostream &, size_t) const = 0;
-        virtual void internal_draw(ostream &, size_t) const = 0;
+        virtual void internal_draw(ostream &) const = 0;
     };
 
     template<typename T>
     struct model : object_concept
     {
-        model(T x) : m_Data(move(x)), tag(boost::uuids::random_generator()())
+        model(T x) : m_Data(move(x)), m_Tag(boost::uuids::random_generator()())
         {
-            cout << "model(): " << std::hex << this << " tag: " << tag << "\n";
+            cout << "model(): " << std::hex << this << " tag: " << m_Tag << "\n";
         }
 
         virtual ~model()
         {
-            cout << "~model(): " << std::hex << this << " tag: " << tag << "\n";
+            cout << "~model(): " << std::hex << this << " tag: " << m_Tag << "\n";
         }
 
-        model(const model &obj) : m_Data(obj.m_Data), tag(obj.tag)
+        model(const model &obj) : m_Data(obj.m_Data), m_Tag(obj.m_Tag)
         {
-            cout << "model() copy: " << std::hex << this << " tag: " << tag << "\n";
+            cout << "model() copy: " << std::hex << this << " tag: " << m_Tag << "\n";
         }
 
-        model(const model &&obj) : m_Data(move(obj.m_Data)), tag(obj.tag)
+        model(const model &&obj) : m_Data(move(obj.m_Data)), m_Tag(obj.m_Tag)
         {
-            cout << "model() move: " << std::hex << this << " tag: " << tag << "\n";
+            cout << "model() move: " << std::hex << this << " tag: " << m_Tag << "\n";
         }
 
         void internal_print_to(ostream &out, size_t position) const
         {
             print_to(m_Data, out, position);
-            out << " Tag: " << to_string(tag) << "\n";
+            out << " Tag: " << to_string(m_Tag) << "\n";
         }
 
-        void internal_draw(ostream &out, size_t position) const
+        void internal_draw(ostream &out) const
         {
-            draw(m_Data, out, position);
+            draw(m_Data, out, m_Position);
         }
 
         T m_Data;
-        boost::uuids::uuid tag;
+        boost::uuids::uuid m_Tag;
+        gp::IntRect m_Position;
     };
 
     shared_ptr<const object_concept> m_Self;

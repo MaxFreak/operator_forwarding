@@ -5,8 +5,14 @@
 #ifndef OPERATOR_FORWARDING_GP_POINT_H
 #define OPERATOR_FORWARDING_GP_POINT_H
 
+#include <ostream>
+#include <string>
+
 namespace gp
 {
+    using std::ostream;
+    using std::string;
+
     template<typename T>
     class gp_point
     {
@@ -18,6 +24,11 @@ namespace gp
 
         template<typename U>
         explicit gp_point(const gp_point<U> &Point);
+
+        void print_to(ostream &Out, size_t Position) const
+        {
+            Out << string(Position, ' ') << "(" << m_X << "/" << m_Y << ")";
+        }
 
         T m_X; /// X coordinate of the point
         T m_Y; /// Y coordinate of the point
