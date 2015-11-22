@@ -81,15 +81,19 @@ public:
     virtual ~ui_object_container() { cout << "ui_documentt(): " << std::hex << this << "\n";}
 };
 
-void draw(const ui_object_container &doc, ostream &out, size_t position)
+void print_to(const ui_object_container &doc, ostream &out, size_t position)
 {
     out << string(position, ' ') << "<document>\n";
     for (auto &e : doc)
     {
         out << to_string(e.GetTag()) << ": ";
-        draw(e, out, position + 2);
+        print_to(e, out, position + 2);
     }
     out << string(position, ' ') << "</document>\n";
+}
+
+void draw(const ui_object_container &doc, ostream &out, size_t position)
+{
 }
 
 #endif //OPERATOR_FORWARDING_UI_OBJECT_CONTAINER_H

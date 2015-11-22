@@ -34,11 +34,11 @@ ui_object_container &current(ui_history &x)
     return x.back();
 }
 
-void draw(const ui_history &hist, ostream &out)
+void print_to(const ui_history &hist, ostream &out)
 {
     for (auto &e : hist)
     {
-        draw(e, out, 0);
+        print_to(e, out, 0);
         cout << "--------------------------\n";
     }
 }

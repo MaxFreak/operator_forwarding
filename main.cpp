@@ -2,10 +2,17 @@
 #include "ui_object_container.h"
 #include "ui_history.h"
 
+#include "common_helpers.h"
+
+template<typename T>
+void print_to(const T &x, ostream &out, size_t position)
+{
+    out << string(position, ' ') << x << "\n";
+}
+
 template<typename T>
 void draw(const T &x, ostream &out, size_t position)
 {
-    out << string(position, ' ') << x << "\n";
 }
 
 // class ui_object
@@ -13,21 +20,6 @@ void draw(const T &x, ostream &out, size_t position)
 // class ui_object_container
 
 // class ui_history
-
-
-// http://florianjw.de/en/variadic_templates.html
-
-template<typename Fun, typename...Ts>
-void sequential_foreach(Fun f, const Ts &... args)
-{
-    (void) std::initializer_list<int>{(f(args), 0)...};
-}
-
-template<typename...Ts>
-void print_all(std::ostream &stream, const Ts &... args)
-{
-    sequential_foreach([&](const auto &arg) { stream << arg; }, args...);
-}
 
 int main()
 {
@@ -51,7 +43,7 @@ int main()
     commit(h);
     current(h).emplace_back(current(h));
 
-    draw(h, cout);
+    print_to(h, cout);
 
     return 0;
 }
