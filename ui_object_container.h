@@ -5,27 +5,12 @@
 #ifndef OPERATOR_FORWARDING_UI_OBJECT_CONTAINER_H
 #define OPERATOR_FORWARDING_UI_OBJECT_CONTAINER_H
 
-//#include <iostream>
-//#include <vector>
-//#include <cassert>
-
-//#include <boost/uuid/uuid.hpp>
-//#include <boost/uuid/uuid_generators.hpp>
-//#include <boost/uuid/uuid_io.hpp>
-
-//#include <string>
 #include <ostream>
-//#include <memory>
 
 #include "ui_object.h"
 
 using std::cout;
 using std::string;
-using std::ostream;
-using std::endl;
-using std::move;
-using std::make_shared;
-using std::shared_ptr;
 using std::vector;
 
 //typedef vector<ui_object> used_container;
@@ -76,9 +61,15 @@ public:
 
     used_container m_Childs;
 
-    ui_object_container() : m_Childs() { cout << "ui_object_container(): " << std::hex << this << "\n"; }
+    ui_object_container() : m_Childs()
+    {
+        cout << "ui_object_container(): " << std::hex << this << " Capacity: " << m_Childs.capacity() << "\n";
+    }
 
-    virtual ~ui_object_container() { cout << "ui_documentt(): " << std::hex << this << "\n";}
+    virtual ~ui_object_container()
+    {
+        cout << "~ui_object_container(): " << std::hex << this << "\n";
+    }
 };
 
 void print_to(const ui_object_container &doc, ostream &out, size_t position)

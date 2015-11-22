@@ -37,7 +37,7 @@ void draw(const my_class_t&, std::ostream& out, size_t position)
 
 int main()
 {
-    cout << "Hello, World!" << endl;
+    cout << "Hello, World!\n" ;
 
     print_all(cout, "Hello", " World", '!', 0 ,'\n');
 
@@ -48,15 +48,24 @@ int main()
 
     current(h).emplace_back("Hello");
     current(h).emplace_back("World");
+    current(h).emplace_back("1");
+    current(h).emplace_back("2");
+    current(h).emplace_back("3");
+    current(h).emplace_back("4");
+    current(h).emplace_back("5");
+    current(h).emplace_back("6");
+    current(h).emplace_back("7");
+    current(h).emplace_back("8");
+    current(h).emplace_back("9");
+    current(h).emplace_back("10");
     current(h).emplace_back(my_class_t());
-    boost::uuids::uuid ot = current(h).m_Childs[0].GetTag();
 
-    commit(h);
+//    boost::uuids::uuid ot = current(h).m_Childs[0].GetTag();
 
-    current(h).emplace_back(current(h));
-
-    commit(h);
-    current(h).emplace_back(current(h));
+//    commit(h);
+//    current(h).emplace_back(current(h));
+//    commit(h);
+//    current(h).emplace_back(current(h));
 
     print_to(h, cout);
 

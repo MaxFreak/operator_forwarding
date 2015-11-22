@@ -19,6 +19,7 @@ using std::ostream;
 using std::move;
 using std::make_shared;
 using std::shared_ptr;
+using std::cout;
 
 template<typename T> void print_to(const T &x, ostream &out, size_t position);
 template<typename T> void draw(const T &x, ostream &out, size_t position);
@@ -27,13 +28,44 @@ class ui_object
 {
 public:
     template<typename T>
-    ui_object(T x) : m_Self(make_shared<model < T>>(move(x))), tag(boost::uuids::random_generator()())
-    { }
+    ui_object(T x) : m_Self(make_shared<model < T>>(move(x)))/*, tag(boost::uuids::random_generator()())*/
+    {
+//        cout << "ui_object(): " << std::hex << this << " tag: " << tag << "\n";
+        cout << "ui_object(): " << std::hex << this << "\n";
+    }
+
+    virtual ~ui_object()
+    {
+        cout << "~ui_object(): " << std::hex << this << "\n";
+    }
+
+//    template<typename T>
+//    ui_object(const ui_object &obj) : m_Self(make_shared<model < T>>(move(obj))), tag(obj.tag)
+//    {
+//        cout << "ui_object() copy: " << std::hex << this << " tag: " << tag << "\n";
+//    }
+//
+//    template<typename T>
+//    ui_object(const ui_object &&obj) : m_Self(make_shared<model < T>>(move(obj))), tag(obj.tag)
+//    {
+//        cout << "ui_object() move: " << std::hex << this << " tag: " << tag << "\n";
+//    }
+
+    ui_object(const ui_object &obj) : m_Self(obj.m_Self)/*, tag(obj.tag)*/
+    {
+//        cout << "ui_object() copy: " << std::hex << this << " tag: " << tag << "\n";
+        cout << "ui_object() copy: " << std::hex << this << "\n";
+    }
+
+    ui_object(const ui_object &&obj) : m_Self(obj.m_Self)/*, tag(obj.tag)*/
+    {
+//        cout << "ui_object() move: " << std::hex << this << " tag: " << tag << "\n";
+        cout << "ui_object() move: " << std::hex << this << "\n";
+    }
 
     friend void print_to(const ui_object &x, ostream &out, size_t position)
     {
         x.m_Self->internal_print_to(out, position);
-        out << ": " << to_string(x.GetTag()) << "\n";
     }
 
     friend void draw(const ui_object &x, ostream &out, size_t position)
@@ -41,10 +73,10 @@ public:
         x.m_Self->internal_draw(out, position);
     }
 
-    const boost::uuids::uuid &GetTag() const
-    {
-        return tag;
-    }
+//    const boost::uuids::uuid &GetTag() const
+//    {
+//        return tag;
+//    }
 
 private:
     struct object_concept
@@ -58,11 +90,30 @@ private:
     template<typename T>
     struct model : object_concept
     {
-        model(T x) : m_Data(move(x)) { }
+        model(T x) : m_Data(move(x)), tag(boost::uuids::random_generator()())
+        {
+            cout << "model(): " << std::hex << this << " tag: " << tag << "\n";
+        }
+
+        virtual ~model()
+        {
+            cout << "~model(): " << std::hex << this << " tag: " << tag << "\n";
+        }
+
+        model(const model &obj) : m_Data(obj.m_Data), tag(obj.tag)
+        {
+            cout << "model() copy: " << std::hex << this << " tag: " << tag << "\n";
+        }
+
+        model(const model &&obj) : m_Data(move(obj.m_Data)), tag(obj.tag)
+        {
+            cout << "model() move: " << std::hex << this << " tag: " << tag << "\n";
+        }
 
         void internal_print_to(ostream &out, size_t position) const
         {
             print_to(m_Data, out, position);
+            out << " Tag: " << to_string(tag) << "\n";
         }
 
         void internal_draw(ostream &out, size_t position) const
@@ -71,10 +122,11 @@ private:
         }
 
         T m_Data;
+        boost::uuids::uuid tag;
     };
 
     shared_ptr<const object_concept> m_Self;
-    boost::uuids::uuid tag;
+//    boost::uuids::uuid tag;
 };
 
 #endif //OPERATOR_FORWARDING_OBJECT_H
