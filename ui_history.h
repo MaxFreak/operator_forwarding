@@ -39,7 +39,7 @@ void print_to(const ui_history &hist, ostream &out)
     for (auto &e : hist)
     {
         print_to(e, out, 0);
-        cout << "--------------------------\n";
+        cout << "\n--------------------------\n";
     }
 }
 

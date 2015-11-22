@@ -32,8 +32,13 @@ public:
 
     friend void print_to(const ui_object &x, ostream &out, size_t position)
     {
-        out << to_string(x.GetTag()) << ": ";
         x.m_Self->internal_print_to(out, position);
+        out << ": " << to_string(x.GetTag()) << "\n";
+    }
+
+    friend void draw(const ui_object &x, ostream &out, size_t position)
+    {
+        x.m_Self->internal_draw(out, position);
     }
 
     const boost::uuids::uuid &GetTag() const

@@ -7,7 +7,7 @@
 template<typename T>
 void print_to(const T &x, ostream &out, size_t position)
 {
-    out << string(position, ' ') << x << "\n";
+    out << string(position, ' ') << x;
 }
 
 template<typename T>
@@ -20,6 +20,20 @@ void draw(const T &x, ostream &out, size_t position)
 // class ui_object_container
 
 // class ui_history
+
+class my_class_t
+{
+/* ... */
+};
+
+void print_to(const my_class_t&, std::ostream& out, size_t position)
+{
+    out << std::string(position, ' ') << "my_class_t";
+}
+
+void draw(const my_class_t&, std::ostream& out, size_t position)
+{
+}
 
 int main()
 {
@@ -34,6 +48,7 @@ int main()
 
     current(h).emplace_back("Hello");
     current(h).emplace_back("World");
+    current(h).emplace_back(my_class_t());
     boost::uuids::uuid ot = current(h).m_Childs[0].GetTag();
 
     commit(h);

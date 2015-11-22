@@ -86,10 +86,10 @@ void print_to(const ui_object_container &doc, ostream &out, size_t position)
     out << string(position, ' ') << "<document>\n";
     for (auto &e : doc)
     {
-        out << to_string(e.GetTag()) << ": ";
+//        out << to_string(e.GetTag()) << ": ";
         print_to(e, out, position + 2);
     }
-    out << string(position, ' ') << "</document>\n";
+    out << string(position, ' ') << "</document>";
 }
 
 void draw(const ui_object_container &doc, ostream &out, size_t position)
