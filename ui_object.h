@@ -28,40 +28,25 @@ class ui_object
 {
 public:
     template<typename T>
-    ui_object(T x) : m_Self(make_shared<model < T>>(move(x)))/*, tag(boost::uuids::random_generator()())*/
+    ui_object(T x) : m_Self(make_shared<model < T>>(move(x)))
     {
-//        cout << "ui_object(): " << std::hex << this << " tag: " << tag << "\n";
-        cout << "ui_object(): " << std::hex << this << "\n";
+//        cout << "ui_object(): " << std::hex << this << "\n";
     }
 
     virtual ~ui_object()
     {
-        cout << "~ui_object(): " << std::hex << this << "\n";
+//        cout << "~ui_object(): " << std::hex << this << "\n";
     }
 
-//    template<typename T>
-//    ui_object(const ui_object &obj) : m_Self(make_shared<model < T>>(move(obj))), tag(obj.tag)
+//    ui_object(const ui_object &obj) : m_Self(obj.m_Self)
 //    {
-//        cout << "ui_object() copy: " << std::hex << this << " tag: " << tag << "\n";
+//        cout << "ui_object() copy: " << std::hex << this << "\n";
 //    }
 //
-//    template<typename T>
-//    ui_object(const ui_object &&obj) : m_Self(make_shared<model < T>>(move(obj))), tag(obj.tag)
+//    ui_object(const ui_object &&obj) : m_Self(obj.m_Self)
 //    {
-//        cout << "ui_object() move: " << std::hex << this << " tag: " << tag << "\n";
+//        cout << "ui_object() move: " << std::hex << this << "\n";
 //    }
-
-    ui_object(const ui_object &obj) : m_Self(obj.m_Self)/*, tag(obj.tag)*/
-    {
-//        cout << "ui_object() copy: " << std::hex << this << " tag: " << tag << "\n";
-        cout << "ui_object() copy: " << std::hex << this << "\n";
-    }
-
-    ui_object(const ui_object &&obj) : m_Self(obj.m_Self)/*, tag(obj.tag)*/
-    {
-//        cout << "ui_object() move: " << std::hex << this << " tag: " << tag << "\n";
-        cout << "ui_object() move: " << std::hex << this << "\n";
-    }
 
     friend void print_to(const ui_object &x, ostream &out, size_t position)
     {
@@ -72,11 +57,6 @@ public:
     {
         x.m_Self->internal_draw(out, position);
     }
-
-//    const boost::uuids::uuid &GetTag() const
-//    {
-//        return tag;
-//    }
 
 private:
     struct object_concept
@@ -126,7 +106,6 @@ private:
     };
 
     shared_ptr<const object_concept> m_Self;
-//    boost::uuids::uuid tag;
 };
 
 #endif //OPERATOR_FORWARDING_OBJECT_H

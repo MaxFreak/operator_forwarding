@@ -62,10 +62,10 @@ int main()
 
 //    boost::uuids::uuid ot = current(h).m_Childs[0].GetTag();
 
-//    commit(h);
-//    current(h).emplace_back(current(h));
-//    commit(h);
-//    current(h).emplace_back(current(h));
+    commit(h);
+    current(h).emplace_back(current(h));
+    commit(h);
+    current(h).emplace_back(current(h));
 
     print_to(h, cout);
 

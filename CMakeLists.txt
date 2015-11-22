@@ -18,7 +18,7 @@ endif()
 #endif( BOOST_FOUND )
 
 
-set(SOURCE_FILES main.cpp ui_history.h ui_object.h ui_object_container.h common_helpers.h)
+set(SOURCE_FILES main.cpp ui_history.h ui_object.h ui_object_container.h common_helpers.h gp_point.h gp_rectangle.h)
 add_executable(operator_forwarding ${SOURCE_FILES})
 
 # add the executable
