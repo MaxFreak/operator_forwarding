@@ -23,6 +23,16 @@ public:
 //    typedef used_container::const_iterator const_iterator;
     using const_iterator = used_container::const_iterator;
 
+    ui_object_container() : m_Childs()
+    {
+        cout << "ui_object_container(): " << std::hex << this << " Capacity: " << m_Childs.capacity() << "\n";
+    }
+
+    virtual ~ui_object_container()
+    {
+        cout << "~ui_object_container(): " << std::hex << this << "\n";
+    }
+
     template <class... Args>
     void emplace_back(Args&&... args)
     {
@@ -57,35 +67,29 @@ public:
     {
         return m_Childs.end();
     }
-public:
-
+private:
     used_container m_Childs;
-
-    ui_object_container() : m_Childs()
-    {
-        cout << "ui_object_container(): " << std::hex << this << " Capacity: " << m_Childs.capacity() << "\n";
-    }
-
-    virtual ~ui_object_container()
-    {
-        cout << "~ui_object_container(): " << std::hex << this << "\n";
-    }
 };
 
-void print_to(const ui_object_container &doc, ostream &out, size_t position)
+void test(ui_object_container &ObjContainer)
+{
+}
+
+void print_to(const ui_object_container &ObjContainer, ostream &out, size_t position)
 {
     out << string(position, ' ') << "<document>\n";
-    for (auto &e : doc)
+    for (auto &e : ObjContainer)
     {
 //        out << to_string(e.GetTag()) << ": ";
+        geo::IntRect r = get_rect(e);
         print_to(e, out, position + 2);
     }
     out << string(position, ' ') << "</document>";
 }
 
-void draw(const ui_object_container &doc, ostream &out)
+void draw(const ui_object_container &ObjContainer, ostream &out)
 {
-    for (auto &e : doc)
+    for (auto &e : ObjContainer)
     {
         draw(e, out);
     }

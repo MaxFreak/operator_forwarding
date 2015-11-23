@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 project(operator_forwarding)
 
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libstdc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 include_directories (".")
@@ -18,7 +19,7 @@ endif()
 #endif( BOOST_FOUND )
 
 
-set(SOURCE_FILES main.cpp ui_history.h ui_object.h ui_object_container.h common_helpers.h gp_point.h gp_rectangle.h)
+set(SOURCE_FILES main.cpp ui_history.h ui_object.h ui_object_container.h common_helpers.h geo_point.h geo_rectangle.h)
 add_executable(operator_forwarding ${SOURCE_FILES})
 
 # add the executable

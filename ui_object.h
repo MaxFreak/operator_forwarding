@@ -8,6 +8,9 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <utility>
+//#include <memory>
+
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -15,7 +18,7 @@
 
 #include <ostream>
 
-#include "gp_rectangle.h"
+#include "geo_rectangle.h"
 
 using std::ostream;
 using std::move;
@@ -24,7 +27,8 @@ using std::shared_ptr;
 using std::cout;
 
 template<typename T> void print_to(const T &X, ostream &Out, size_t Position);
-template<typename T> void draw(const T &X, ostream &Out, gp::IntRect Position);
+template<typename T> void draw(const T &X, ostream &Out, geo::IntRect Position);
+//template<typename T> geo::IntRect get_rect(const T &X);
 
 class ui_object
 {
@@ -32,12 +36,12 @@ public:
     template<typename T>
     ui_object(T x) : m_Self(make_shared<model < T>>(move(x)))
     {
-//        cout << "ui_object(): " << std::hex << this << "\n";
+        cout << "ui_object(): " << std::hex << this << "\n";
     }
 
     virtual ~ui_object()
     {
-//        cout << "~ui_object(): " << std::hex << this << "\n";
+        cout << "~ui_object(): " << std::hex << this << "\n";
     }
 
 //    ui_object(const ui_object &obj) : m_Self(obj.m_Self)
@@ -50,6 +54,24 @@ public:
 //        cout << "ui_object() move: " << std::hex << this << "\n";
 //    }
 
+    void test()
+    {
+
+    }
+
+    template<typename T>
+    boost::uuids::uuid get_tag()
+    {
+        model<T> oc = m_Self.get();
+//        return static_cast<model<T>>(m_Self).m_Tag;
+        return oc.m_Tag;
+    }
+
+    geo::IntRect get_rect()
+    {
+        return m_Self->internal_get_rect();
+    }
+
     friend void print_to(const ui_object &x, ostream &out, size_t position)
     {
         x.m_Self->internal_print_to(out, position);
@@ -60,6 +82,11 @@ public:
         x.m_Self->internal_draw(out);
     }
 
+    friend geo::IntRect get_rect(const ui_object &x)
+    {
+        return x.m_Self->internal_get_rect();
+    }
+
 private:
     struct object_concept
     {
@@ -67,6 +94,7 @@ private:
 
         virtual void internal_print_to(ostream &, size_t) const = 0;
         virtual void internal_draw(ostream &) const = 0;
+        virtual geo::IntRect internal_get_rect() const = 0;
     };
 
     template<typename T>
@@ -103,9 +131,14 @@ private:
             draw(m_Data, out, m_Position);
         }
 
+        geo::IntRect internal_get_rect() const
+        {
+            return m_Position;
+        }
+
         T m_Data;
         boost::uuids::uuid m_Tag;
-        gp::IntRect m_Position;
+        geo::IntRect m_Position;
     };
 
     shared_ptr<const object_concept> m_Self;
