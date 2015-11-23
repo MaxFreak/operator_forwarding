@@ -1,3 +1,5 @@
+# -D BOOST_ROOT=/Users/bl/ClionProjects/boost_1_59_0/ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
 cmake_minimum_required(VERSION 3.3)
 project(operator_forwarding)
 
